@@ -3,7 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import socketController from '../sockets/controller.js';
+import socketController from '../controllers/socket.js';
 
 
 export class RestServer {
@@ -13,25 +13,16 @@ export class RestServer {
         this.port = process.env.PORT;
         this.server = createServer(this.app);
         this.io = new Server(this.server); // toda la información de los sockets conectados
-
         this.path = {}
-
         this.middlewares();
-
         this.routes();
-
         this.sockets();
     }
 
     middlewares() {
-        // cors
         this.app.use(cors());
-
-        // lectura y Parseo del body
-        this.app.use(express.json());
-
-        // directorio publico
-        this.app.use(express.static('public'));
+        this.app.use(express.json()); // lectura y Parseo del body
+        this.app.use(express.static('public')); // directorio publico
 
     }
 
